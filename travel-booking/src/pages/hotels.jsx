@@ -1,21 +1,34 @@
 import React, { useState } from "react";
 import hotelsData from "../data/hotel";
 
-function Hotels() {
+function Hotels({ onSelectHotel }) {
   const [city, setCity] = useState("");
   const [results, setResults] = useState([]);
 
+  // 🔎 Search Hotels
   const searchHotels = () => {
     const filtered = hotelsData.filter(
       (h) => h.city.toLowerCase() === city.toLowerCase()
     );
+
     setResults(filtered);
   };
 
+  // ✅ Select Hotel (Send to App.js)
+  const selectHotel = (hotel) => {
+    if (onSelectHotel) {
+      onSelectHotel(hotel);
+    }
+
+    alert("Hotel Selected Successfully!");
+  };
+
+  // 💾 Optional: Save to MyTrips
   const bookHotel = (hotel) => {
     let trips = JSON.parse(localStorage.getItem("myTrips")) || [];
     trips.push({ type: "hotel", ...hotel });
     localStorage.setItem("myTrips", JSON.stringify(trips));
+
     alert("Hotel Booked Successfully!");
   };
 
@@ -23,6 +36,7 @@ function Hotels() {
     <div className="container">
       <h2 className="page-title">🏨 Hotel Booking</h2>
 
+      {/* 🔎 Search Section */}
       <div className="form-section">
         <input
           type="text"
@@ -36,6 +50,7 @@ function Hotels() {
         </button>
       </div>
 
+      {/* 📋 Results Section */}
       {results.length === 0 ? (
         <p className="no-results">No Hotels Found</p>
       ) : (
@@ -43,7 +58,7 @@ function Hotels() {
           {results.map((hotel) => (
             <div key={hotel.id} className="result-card">
 
-              {/* ✅ IMAGE ADDED HERE */}
+              {/* 🖼 Hotel Image */}
               <img
                 src={hotel.image}
                 alt={hotel.name}
@@ -55,12 +70,22 @@ function Hotels() {
               <p>⭐ {hotel.rating} Star</p>
               <p>💰 ₹{hotel.price}</p>
 
-              <button
-                className="book-btn"
-                onClick={() => bookHotel(hotel)}
-              >
-                Book Now
-              </button>
+              <div style={{ marginTop: "10px" }}>
+                <button
+                  className="book-btn"
+                  onClick={() => selectHotel(hotel)}
+                  style={{ marginRight: "10px" }}
+                >
+                  Select Hotel
+                </button>
+
+                <button
+                  className="book-btn"
+                  onClick={() => bookHotel(hotel)}
+                >
+                  Book Now
+                </button>
+              </div>
 
             </div>
           ))}
@@ -69,5 +94,6 @@ function Hotels() {
     </div>
   );
 }
-
+// hotel booking 
+// safasfs
 export default Hotels;

@@ -68,14 +68,18 @@ input:focus {
   transform: translateY(-2px);
 }
 
-/* ===== RESULTS GRID ===== */
+/* ===================================================== */
+/* ================== HOTELS SECTION =================== */
+/* ===================================================== */
+
+/* Hotel Grid */
 .results-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
 }
 
-/* ===== RESULT CARD ===== */
+/* Hotel Card */
 .result-card {
   background-color: #efefef;
   padding: 20px;
@@ -85,7 +89,7 @@ input:focus {
 }
 
 .result-card:hover {
-  transform: translateX(6px);
+  transform: translateY(-5px);
   background-color: #e2e2e2;
 }
 
@@ -95,12 +99,83 @@ input:focus {
 }
 
 .result-card p {
-  margin: 5px 0;
+  margin: 6px 0;
 }
 
-/* ===== BOOK BUTTON ===== */
+/* Hotel Image */
+.hotel-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+/* ===================================================== */
+/* ================== FLIGHTS SECTION ================== */
+/* ===================================================== */
+
+.results-container {
+  margin-top: 30px;
+}
+
+/* Flight Card Layout */
+.flight-card {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  background: #efefef;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 25px;
+  border-left: 6px solid #008585;
+  transition: 0.3s;
+}
+
+.flight-card:hover {
+  background-color: #e2e2e2;
+  transform: translateX(6px);
+}
+
+/* Flight Image Section */
+.flight-image {
+  flex: 1;
+}
+
+.flight-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* Flight Details Section */
+.flight-details {
+  flex: 2;
+}
+
+.flight-details h3 {
+  color: #008585;
+  margin-bottom: 10px;
+}
+
+.route {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+/* Flight Buttons */
+.flight-buttons {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+/* ===================================================== */
+/* =================== BUTTONS ========================= */
+/* ===================================================== */
+
 .book-btn {
-  margin-top: 10px;
   background-color: #2f9c95;
   padding: 8px 18px;
   border-radius: 6px;
@@ -114,30 +189,29 @@ input:focus {
   background-color: #0f7f7f;
 }
 
-/* ===== NO RESULTS TEXT ===== */
+/* ===== NO RESULTS ===== */
 .no-results {
   color: #0f7f7f;
   margin-top: 10px;
   font-weight: 500;
 }
 
-.hotel-img {
-  width: 100%;
-  height: 220px;      /* fixed height */
-  object-fit: cover;  /* crop properly */
-  border-radius: 12px;
-  margin-bottom: 15px;
-}
+/* ===================================================== */
+/* =================== RESPONSIVE ====================== */
+/* ===================================================== */
 
-
-/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-  .container {
-    width: 95%;
+  .flight-card {
+    flex-direction: column;
+  }
+
+  .flight-img {
+    height: 200px;
   }
 
   input {
     width: 100%;
+    margin-bottom: 10px;
   }
 
   .search-btn {
