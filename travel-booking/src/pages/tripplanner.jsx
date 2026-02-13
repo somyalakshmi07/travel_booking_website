@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/tripplanner.css";
 
 // Import components from friends
-import FlightSelection from "./flights";
+import FlightSelection from "./flight";
 import HotelSelection from "./hotel";
 
 const activitiesData = [
