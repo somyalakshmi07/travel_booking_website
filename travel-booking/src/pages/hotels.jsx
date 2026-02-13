@@ -94,5 +94,6 @@ function Hotels({ onSelectHotel }) {
     </div>
   );
 }
-// hotel booking
+// hotel booking 
+// safasfs
 export default Hotels;
