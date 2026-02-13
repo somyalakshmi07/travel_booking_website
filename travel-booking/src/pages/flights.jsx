@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import flightsData from "../data/flights";
+import { useNavigate } from "react-router-dom";
 
 function Flights({ onSelectFlight }) {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [results, setResults] = useState([]);
+
+  const navigate = useNavigate();   // ✅ IMPORTANT LINE
 
   // 🔎 Search Flights
   const handleSearch = () => {
@@ -17,7 +20,7 @@ function Flights({ onSelectFlight }) {
     setResults(filtered);
   };
 
-  // ✅ Select Flight (Send to App.js)
+  // ✅ Select Flight (Optional – if using Trip Planner)
   const selectFlight = (flight) => {
     if (onSelectFlight) {
       onSelectFlight(flight);
@@ -25,17 +28,26 @@ function Flights({ onSelectFlight }) {
     alert("Flight Selected Successfully!");
   };
 
-  // 💾 Save to LocalStorage
+  // 💳 Book Flight → Redirect to Payment
   const bookFlight = (flight) => {
-    let trips = JSON.parse(localStorage.getItem("myTrips")) || [];
-    trips.push({ type: "flight", ...flight });
-    localStorage.setItem("myTrips", JSON.stringify(trips));
-    alert("Flight Booked Successfully!");
+
+    const tripData = {
+      flight: flight,
+      hotel: null,
+      travelers: 1,
+      total: flight.price,
+      discount: 0,
+      finalTotal: flight.price
+    };
+
+    localStorage.setItem("currentTrip", JSON.stringify(tripData));
+
+    navigate("/payment");   // ✅ Redirect works now
   };
 
   return (
     <div className="container">
-      <h2 className="page-title">✈ Flight Booking</h2>
+      <h2 className="page-title">Flight Booking</h2>
 
       {/* 🔎 Search Section */}
       <div className="form-section">
@@ -78,11 +90,13 @@ function Flights({ onSelectFlight }) {
               {/* RIGHT SIDE DETAILS */}
               <div className="flight-details">
                 <h3>{flight.airline}</h3>
+
                 <p className="route">
                   {flight.from} → {flight.to}
                 </p>
-                <p><b>TIME:</b> {flight.time}</p>
-                <p><b>PRICE:₹</b>{flight.price}</p>
+
+                <p><strong>Departure Time:</strong> {flight.time}</p>
+                <p><strong>Price:</strong> ₹{flight.price}</p>
 
                 <div className="flight-buttons">
                   <button

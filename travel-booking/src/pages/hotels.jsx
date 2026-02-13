@@ -1,40 +1,40 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import hotelsData from "../data/hotel";
+import hotelsData from "../data/hotel"; // make sure this path is correct
 
-function Hotels({ onSelectHotel }) {
-  const [city, setCity] = useState("");
+function Hotels() {
+  const [location, setLocation] = useState("");
   const [results, setResults] = useState([]);
-  const navigate = useNavigate(); // ✅ ADD THIS
+  const navigate = useNavigate();
 
-  // 🔎 Search Hotels
-  const searchHotels = () => {
+  // 🔍 Search Hotels
+  const handleSearch = () => {
     const filtered = hotelsData.filter(
-      (h) => h.city.toLowerCase() === city.toLowerCase()
+      (hotel) =>
+        hotel.city.toLowerCase() === location.toLowerCase()
     );
     setResults(filtered);
   };
 
-  // ✅ Select Hotel (Send to App.js)
-  const selectHotel = (hotel) => {
-    if (onSelectHotel) {
-      onSelectHotel(hotel);
-    }
-    alert("Hotel Selected Successfully!");
-  };
-
-  // 💾 Book Hotel → Redirect to Offers
+  // 🏨 Book Hotel and Redirect to Payment
   const bookHotel = (hotel) => {
-  // overwrite previous booking
-    localStorage.setItem(
-      "myTrips",
-      JSON.stringify([{ type: "hotel", ...hotel }])
-    );
 
-    // clear old coupon
-    localStorage.removeItem("appliedCoupon");
+    // Get existing trip (if flight already selected)
+    const existingTrip = JSON.parse(localStorage.getItem("currentTrip")) || {};
 
-    navigate("/offers");
+    const updatedTrip = {
+      ...existingTrip,
+      hotel: hotel,
+      travelers: existingTrip.travelers || 1,
+      total: (existingTrip.flight?.price || 0) + hotel.price,
+      discount: 0,
+      finalTotal: (existingTrip.flight?.price || 0) + hotel.price
+    };
+
+    localStorage.setItem("currentTrip", JSON.stringify(updatedTrip));
+
+    // Redirect to payment
+    navigate("/payment");
   };
 
 
@@ -42,15 +42,16 @@ function Hotels({ onSelectHotel }) {
     <div className="container">
       <h2 className="page-title">🏨 Hotel Booking</h2>
 
-      {/* 🔎 Search Section */}
+      {/* 🔍 Search Section */}
       <div className="form-section">
         <input
           type="text"
-          placeholder="Enter Destination"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
+          placeholder="Enter Location"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
         />
-        <button className="search-btn" onClick={searchHotels}>
+
+        <button className="search-btn" onClick={handleSearch}>
           Search Hotels
         </button>
       </div>
@@ -59,35 +60,34 @@ function Hotels({ onSelectHotel }) {
       {results.length === 0 ? (
         <p className="no-results">No Hotels Found</p>
       ) : (
-        <div className="results-grid">
+        <div className="results-container">
           {results.map((hotel) => (
-            <div key={hotel.id} className="result-card">
-              <img
-                src={hotel.image}
-                alt={hotel.name}
-                className="hotel-img"
-              />
+            <div key={hotel.id} className="flight-card">
 
-              <h3>{hotel.name}</h3>
-              <p>📍 {hotel.city}</p>
-              <p>⭐ {hotel.rating} Star</p>
-              <p>💰 ₹{hotel.price}</p>
+              {/* LEFT SIDE IMAGE */}
+              <div className="flight-image">
+                <img
+                  src={hotel.image}
+                  alt={hotel.name}
+                  className="flight-img"
+                />
+              </div>
 
-              <div style={{ marginTop: "10px" }}>
-                <button
-                  className="book-btn"
-                  onClick={() => selectHotel(hotel)}
-                  style={{ marginRight: "10px" }}
-                >
-                  Select Hotel
-                </button>
+              {/* RIGHT SIDE DETAILS */}
+              <div className="flight-details">
+                <h3>{hotel.name}</h3>
+                <p><b>Location:</b> {hotel.location}</p>
+                <p><b>Rating:</b> {hotel.rating} Star</p>
+                <p><b>Price: ₹</b>{hotel.price}</p>
 
-                <button
-                  className="book-btn"
-                  onClick={() => bookHotel(hotel)}
-                >
-                  Book Now
-                </button>
+                <div className="flight-buttons">
+                  <button
+                    className="book-btn"
+                    onClick={() => bookHotel(hotel)}
+                  >
+                    Book Now
+                  </button>
+                </div>
               </div>
             </div>
           ))}
