@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "../styles/tripplanner.css";
 
 // Import components from friends
-import FlightSelection from "./flight";
-import HotelSelection from "./hotel";
+import FlightSelection from "./flights";
+import HotelSelection from "./hotels";
 
 const activitiesData = [
   { id: 1, name: "Scuba Diving", location: "Grande Island", price: 2000, duration: "3h", rating: 4.7, image: "🤿", type: "Adventure" },
