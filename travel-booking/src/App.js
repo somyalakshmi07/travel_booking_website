@@ -6,7 +6,7 @@ import Footer from "./components/footer";
 
 import Home from "./pages/Home";
 import Destinations from "./pages/Destinations";
-import Packages from "./pages/Packages";
+import Packages from "./pages/packages";
 import Booking from "./pages/Booking";
 
 import Offers from "./pages/offers";
