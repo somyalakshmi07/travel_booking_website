@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Card from "../components/Card";
 import Button from "../components/Button";
 import "../styles/offers.css";
@@ -7,6 +8,7 @@ function Offers() {
   const [coupon, setCoupon] = useState("");
   const [message, setMessage] = useState("");
   const [applied, setApplied] = useState(false);
+  const navigate = useNavigate(); // ✅ ADD THIS
 
   const offers = [
     { code: "SUMMER20", text: "Save 20% on Summer Trips" },
@@ -28,8 +30,14 @@ function Offers() {
         "appliedCoupon",
         JSON.stringify({ code, discount: coupons[code] })
       );
+
       setApplied(true);
       setMessage(`Coupon ${code} applied successfully 🎉`);
+
+      // 🔴 Redirect to Payment
+      setTimeout(() => {
+        navigate("/payment");
+      }, 800);
     } else {
       setMessage("Invalid coupon code ❌");
     }
@@ -62,10 +70,17 @@ function Offers() {
             onChange={(e) => setCoupon(e.target.value.toUpperCase())}
             className="coupon-input"
           />
+
           <Button
             text={applied ? "Coupon Applied" : "Apply Coupon"}
             onClick={applyCoupon}
           />
+
+          <Button
+            text="Skip & Continue to Payment"
+            onClick={() => navigate("/payment")}
+          />
+
           {message && <p className="coupon-message">{message}</p>}
         </div>
       </div>
