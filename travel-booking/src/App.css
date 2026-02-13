@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+
+
+.trip-card, .card {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: #fbf2c4;
+}
