@@ -39,6 +39,9 @@ function App() {
         <Route path="/hotels" element={<Hotels />} />
         <Route path="/tripplanner" element={<TripPlanner />} />
         <Route path="/payment" element={<Payment />} />
+        <Route path="/mytrip" element={<MyTrips />} />
+        <Route path="/payment" element={<Payment />} />
+
 
         {/* Additional Pages */}
         <Route path="/offers" element={<Offers />} />
