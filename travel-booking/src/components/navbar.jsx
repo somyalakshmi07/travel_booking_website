@@ -30,4 +30,4 @@ const styles = {
   }
 };
 
-export default Navbar;
+export default navbar;
