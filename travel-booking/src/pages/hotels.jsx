@@ -13,7 +13,6 @@ function Hotels() {
       (hotel) =>
         hotel.city.toLowerCase() === location.toLowerCase()
     );
-
     setResults(filtered);
   };
 
@@ -37,6 +36,7 @@ function Hotels() {
     // Redirect to payment
     navigate("/payment");
   };
+
 
   return (
     <div className="container">
@@ -89,7 +89,6 @@ function Hotels() {
                   </button>
                 </div>
               </div>
-
             </div>
           ))}
         </div>
