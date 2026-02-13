@@ -4,33 +4,40 @@ import "../styles/payment.css";
 
 function Payment() {
   const navigate = useNavigate();
-    // 🔹 Read hotel data
-    const trips = JSON.parse(localStorage.getItem("myTrips")) || [];
-    const hotelTrip = trips.find(t => t.type === "hotel");
 
-    // 🔹 Read coupon data
-    const couponData = JSON.parse(localStorage.getItem("appliedCoupon"));
+  // 🔹 1. Get total from MyTrips page (priority)
+  const paymentTotal =
+    parseInt(localStorage.getItem("paymentTotal")) || 0;
 
-    // 🔹 Calculate values
-    const hotelPrice = hotelTrip ? hotelTrip.price : 0;
-    const discount = couponData
-      ? Math.round((hotelPrice * couponData.discount) / 100)
-      : 0;
+  // 🔹 2. Get individual hotel (if coming directly)
+  const trips = JSON.parse(localStorage.getItem("myTrips")) || [];
+  const hotelTrip = trips.find(t => t.type === "hotel");
 
-    const subtotal = hotelPrice;
-    const taxAmount = Math.round((subtotal - discount) * 0.12);
-    const finalTotal = subtotal - discount + taxAmount;
+  const couponData = JSON.parse(localStorage.getItem("appliedCoupon"));
 
-    // 🔹 Build trip object (for UI compatibility)
-    const trip = {
-      hotel: hotelTrip,
-      total: subtotal,
-      discount: discount,
-      finalTotal: subtotal - discount,
-      appliedOffers: couponData
-        ? [{ title: couponData.code }]
-        : []
-      };
+  const hotelPrice = hotelTrip ? hotelTrip.price : 0;
+
+  // 🔹 FINAL SUBTOTAL (if MyTrips exists use that, else hotel)
+  const subtotal = paymentTotal > 0 ? paymentTotal : hotelPrice;
+
+  const discount = couponData
+    ? Math.round((subtotal * couponData.discount) / 100)
+    : 0;
+
+  const taxAmount = Math.round((subtotal - discount) * 0.12);
+  const finalTotal = subtotal - discount + taxAmount;
+
+  // 🔹 Trip object
+  const trip = {
+    hotel: hotelTrip,
+    total: subtotal,
+    discount,
+    finalTotal,
+    appliedOffers: couponData
+      ? [{ title: couponData.code }]
+      : []
+  };
+
 
   const [method, setMethod] = useState("card");
   const [paymentDetails, setPaymentDetails] = useState({
@@ -81,49 +88,86 @@ function Payment() {
     }
   };
 
-  const confirmPayment = () => {
-    if (!validatePayment()) {
-      alert("Please enter valid payment details");
-      return;
-    }
+const confirmPayment = () => {
+  if (!validatePayment()) {
+    alert("Please enter valid payment details");
+    return;
+  }
 
-    setProcessing(true);
-    setActiveStep(3);
-    
+  setProcessing(true);
+  setActiveStep(3);
+
+  setTimeout(() => {
+    // 🔹 Get completed trips
+    const completedTrips =
+      JSON.parse(localStorage.getItem("completedTrips")) || [];
+
+    const taxAmount = Math.round(trip.finalTotal * 0.12);
+    const totalWithTax = trip.finalTotal + taxAmount;
+
+    // 🔹 Save to completedTrips
+    completedTrips.push({
+      ...trip,
+      bookingId:
+        "TB" +
+        Date.now() +
+        Math.random().toString(36).substr(2, 4).toUpperCase(),
+      status: "Confirmed",
+      paymentMethod: method.toUpperCase(),
+      bookingDate: new Date().toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+      paymentId:
+        "PAY" +
+        Math.random().toString(36).substr(2, 12).toUpperCase(),
+      totalWithTax,
+      taxAmount,
+      saveCardDetails: saveCard,
+      offers: trip.appliedOffers,
+    });
+
+    localStorage.setItem(
+      "completedTrips",
+      JSON.stringify(completedTrips)
+    );
+
+    // 🔥 Update selectedTrips status to Confirmed
+    const selectedTrips =
+      JSON.parse(localStorage.getItem("selectedTrips")) || [];
+
+    const updatedTrips = selectedTrips.map((t) =>
+      t.status !== "Cancelled"
+        ? { ...t, status: "Confirmed" }
+        : t
+    );
+
+    localStorage.setItem(
+      "selectedTrips",
+      JSON.stringify(updatedTrips)
+    );
+
+    // ✅ CLEAR PAYMENT DATA (So next time total becomes 0)
+    localStorage.removeItem("paymentTotal");
+    localStorage.removeItem("paymentTrips");
+
+    localStorage.removeItem("currentTrip");
+
     setTimeout(() => {
-      const completedTrips = JSON.parse(localStorage.getItem("completedTrips")) || [];
-      
-      const taxAmount = Math.round(trip.finalTotal * 0.12);
-      const totalWithTax = trip.finalTotal + taxAmount;
-      
-      completedTrips.push({
-        ...trip,
-        bookingId: "TB" + Date.now() + Math.random().toString(36).substr(2, 4).toUpperCase(),
-        status: "Confirmed",
-        paymentMethod: method.toUpperCase(),
-        bookingDate: new Date().toLocaleDateString('en-IN', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        }),
-        paymentId: "PAY" + Math.random().toString(36).substr(2, 12).toUpperCase(),
-        totalWithTax,
-        taxAmount,
-        saveCardDetails: saveCard,
-        offers: trip.appliedOffers
-      });
+      setProcessing(false);
 
-      localStorage.setItem("completedTrips", JSON.stringify(completedTrips));
-      localStorage.removeItem("currentTrip");
-      
-      setTimeout(() => {
-        setProcessing(false);
-        navigate("/mytrip");
-      }, 1000);
-    }, 2000);
-  };
+      // ✅ Success Alert
+      alert("🎉 Payment Done Successfully!");
+
+      navigate("/mytrip");
+    }, 1000);
+  }, 2000);
+};
+
+
 
   return (
     <div className="payment-wrapper">
