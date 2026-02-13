@@ -94,5 +94,5 @@ function Hotels({ onSelectHotel }) {
     </div>
   );
 }
-
+// hotel booking
 export default Hotels;
