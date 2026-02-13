@@ -1,24 +1,18 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import "../styles/navbar.css";
+import { Link } from "react-router-dom";
+import "./navbar.css";
 
-function navbar() {
+function Navbar() {
   return (
     <nav className="navbar">
-      <div className="logo">TravelEase ✈</div>
+      <div className="logo">
+        Chandu Travel ✈
+      </div>
 
       <div className="nav-links">
-        <NavLink to="/tripplanner" className="nav-item">
-          Trip Planner
-        </NavLink>
-
-        <NavLink to="/payment" className="nav-item">
-          Payment
-        </NavLink>
-
-        <NavLink to="/mytrip" className="nav-item">
-          My Trips
-        </NavLink>
+        <Link to="/">Home</Link>
+        <Link to="/flights">Flights</Link>
+        <Link to="/hotels">Hotels</Link>
       </div>
     </nav>
   );
