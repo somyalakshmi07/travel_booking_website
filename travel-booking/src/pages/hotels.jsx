@@ -1,16 +1,17 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import hotelsData from "../data/hotel";
 
 function Hotels({ onSelectHotel }) {
   const [city, setCity] = useState("");
   const [results, setResults] = useState([]);
+  const navigate = useNavigate(); // ✅ ADD THIS
 
   // 🔎 Search Hotels
   const searchHotels = () => {
     const filtered = hotelsData.filter(
       (h) => h.city.toLowerCase() === city.toLowerCase()
     );
-
     setResults(filtered);
   };
 
@@ -19,18 +20,23 @@ function Hotels({ onSelectHotel }) {
     if (onSelectHotel) {
       onSelectHotel(hotel);
     }
-
     alert("Hotel Selected Successfully!");
   };
 
-  // 💾 Optional: Save to MyTrips
+  // 💾 Book Hotel → Redirect to Offers
   const bookHotel = (hotel) => {
-    let trips = JSON.parse(localStorage.getItem("myTrips")) || [];
-    trips.push({ type: "hotel", ...hotel });
-    localStorage.setItem("myTrips", JSON.stringify(trips));
+  // overwrite previous booking
+    localStorage.setItem(
+      "myTrips",
+      JSON.stringify([{ type: "hotel", ...hotel }])
+    );
 
-    alert("Hotel Booked Successfully!");
+    // clear old coupon
+    localStorage.removeItem("appliedCoupon");
+
+    navigate("/offers");
   };
+
 
   return (
     <div className="container">
@@ -44,7 +50,6 @@ function Hotels({ onSelectHotel }) {
           value={city}
           onChange={(e) => setCity(e.target.value)}
         />
-
         <button className="search-btn" onClick={searchHotels}>
           Search Hotels
         </button>
@@ -57,8 +62,6 @@ function Hotels({ onSelectHotel }) {
         <div className="results-grid">
           {results.map((hotel) => (
             <div key={hotel.id} className="result-card">
-
-              {/* 🖼 Hotel Image */}
               <img
                 src={hotel.image}
                 alt={hotel.name}
@@ -86,7 +89,6 @@ function Hotels({ onSelectHotel }) {
                   Book Now
                 </button>
               </div>
-
             </div>
           ))}
         </div>
@@ -94,6 +96,5 @@ function Hotels({ onSelectHotel }) {
     </div>
   );
 }
-// hotel booking 
-// safasfs
+
 export default Hotels;
