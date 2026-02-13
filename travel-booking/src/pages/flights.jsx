@@ -22,16 +22,14 @@ function Flights({ onSelectFlight }) {
     if (onSelectFlight) {
       onSelectFlight(flight);
     }
-
     alert("Flight Selected Successfully!");
   };
 
-  // 💾 Optional: Save directly to MyTrips
+  // 💾 Save to LocalStorage
   const bookFlight = (flight) => {
     let trips = JSON.parse(localStorage.getItem("myTrips")) || [];
     trips.push({ type: "flight", ...flight });
     localStorage.setItem("myTrips", JSON.stringify(trips));
-
     alert("Flight Booked Successfully!");
   };
 
@@ -64,39 +62,43 @@ function Flights({ onSelectFlight }) {
       {results.length === 0 ? (
         <p className="no-results">No Flights Found</p>
       ) : (
-        <div className="results-grid">
+        <div className="results-container">
           {results.map((flight) => (
-            <div key={flight.id} className="result-card">
+            <div key={flight.id} className="flight-card">
 
-              {/* 🖼 Flight Image */}
-              <img
-                src={flight.image}
-                alt={flight.airline}
-                className="flight-img"
-              />
+              {/* LEFT SIDE IMAGE */}
+              <div className="flight-image">
+                <img
+                  src={flight.image}
+                  alt={flight.airline}
+                  className="flight-img"
+                />
+              </div>
 
-              <h3>{flight.airline}</h3>
-              <p>
-                {flight.from} → {flight.to}
-              </p>
-              <p>🕒 {flight.time}</p>
-              <p>💰 ₹{flight.price}</p>
+              {/* RIGHT SIDE DETAILS */}
+              <div className="flight-details">
+                <h3>{flight.airline}</h3>
+                <p className="route">
+                  {flight.from} → {flight.to}
+                </p>
+                <p><b>TIME:</b> {flight.time}</p>
+                <p><b>PRICE:₹</b>{flight.price}</p>
 
-              <div style={{ marginTop: "10px" }}>
-                <button
-                  className="book-btn"
-                  onClick={() => selectFlight(flight)}
-                  style={{ marginRight: "10px" }}
-                >
-                  Select Flight
-                </button>
+                <div className="flight-buttons">
+                  <button
+                    className="book-btn"
+                    onClick={() => selectFlight(flight)}
+                  >
+                    Select Flight
+                  </button>
 
-                <button
-                  className="book-btn"
-                  onClick={() => bookFlight(flight)}
-                >
-                  Book Now
-                </button>
+                  <button
+                    className="book-btn"
+                    onClick={() => bookFlight(flight)}
+                  >
+                    Book Now
+                  </button>
+                </div>
               </div>
 
             </div>
