@@ -2,13 +2,13 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import Footer from "./components/footer";
 
 import Home from "./pages/Home";
 import Offers from "./pages/offers";
-import Support from "./pages/Support";
-import Flights from "./pages/Flights";
-import Hotels from "./pages/Hotels";
+import Support from "./pages/support";
+import Flights from "./pages/flights";
+import Hotels from "./pages/hotels";
 import TripPlanner from "./pages/tripplanner";
 import Payment from "./pages/payment";
 import MyTrips from "./pages/mytrip";
@@ -31,6 +31,8 @@ function App() {
         <Route path="/tripplanner" element={<TripPlanner />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/mytrip" element={<MyTrips />} />
+        <Route path="/payment" element={<Payment />} />
+
 
         {/* Additional Pages */}
         <Route path="/offers" element={<Offers />} />

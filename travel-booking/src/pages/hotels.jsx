@@ -1,51 +1,57 @@
 import React, { useState } from "react";
-import hotelsData from "../data/hotel";
+import { useNavigate } from "react-router-dom";
+import hotelsData from "../data/hotel"; // make sure this path is correct
 
-function Hotels({ onSelectHotel }) {
-  const [city, setCity] = useState("");
+function Hotels() {
+  const [location, setLocation] = useState("");
   const [results, setResults] = useState([]);
+  const navigate = useNavigate();
 
-  // 🔎 Search Hotels
-  const searchHotels = () => {
+  // 🔍 Search Hotels
+  const handleSearch = () => {
     const filtered = hotelsData.filter(
-      (h) => h.city.toLowerCase() === city.toLowerCase()
+      (hotel) =>
+        hotel.city.toLowerCase() === location.toLowerCase()
     );
 
     setResults(filtered);
   };
 
-  // ✅ Select Hotel (Send to App.js)
-  const selectHotel = (hotel) => {
-    if (onSelectHotel) {
-      onSelectHotel(hotel);
-    }
-
-    alert("Hotel Selected Successfully!");
-  };
-
-  // 💾 Optional: Save to MyTrips
+  // 🏨 Book Hotel and Redirect to Payment
   const bookHotel = (hotel) => {
-    let trips = JSON.parse(localStorage.getItem("myTrips")) || [];
-    trips.push({ type: "hotel", ...hotel });
-    localStorage.setItem("myTrips", JSON.stringify(trips));
 
-    alert("Hotel Booked Successfully!");
+    // Get existing trip (if flight already selected)
+    const existingTrip = JSON.parse(localStorage.getItem("currentTrip")) || {};
+
+    const updatedTrip = {
+      ...existingTrip,
+      hotel: hotel,
+      travelers: existingTrip.travelers || 1,
+      total: (existingTrip.flight?.price || 0) + hotel.price,
+      discount: 0,
+      finalTotal: (existingTrip.flight?.price || 0) + hotel.price
+    };
+
+    localStorage.setItem("currentTrip", JSON.stringify(updatedTrip));
+
+    // Redirect to payment
+    navigate("/payment");
   };
 
   return (
     <div className="container">
       <h2 className="page-title">🏨 Hotel Booking</h2>
 
-      {/* 🔎 Search Section */}
+      {/* 🔍 Search Section */}
       <div className="form-section">
         <input
           type="text"
-          placeholder="Enter Destination"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
+          placeholder="Enter Location"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
         />
 
-        <button className="search-btn" onClick={searchHotels}>
+        <button className="search-btn" onClick={handleSearch}>
           Search Hotels
         </button>
       </div>
@@ -54,37 +60,34 @@ function Hotels({ onSelectHotel }) {
       {results.length === 0 ? (
         <p className="no-results">No Hotels Found</p>
       ) : (
-        <div className="results-grid">
+        <div className="results-container">
           {results.map((hotel) => (
-            <div key={hotel.id} className="result-card">
+            <div key={hotel.id} className="flight-card">
 
-              {/* 🖼 Hotel Image */}
-              <img
-                src={hotel.image}
-                alt={hotel.name}
-                className="hotel-img"
-              />
+              {/* LEFT SIDE IMAGE */}
+              <div className="flight-image">
+                <img
+                  src={hotel.image}
+                  alt={hotel.name}
+                  className="flight-img"
+                />
+              </div>
 
-              <h3>{hotel.name}</h3>
-              <p>📍 {hotel.city}</p>
-              <p>⭐ {hotel.rating} Star</p>
-              <p>💰 ₹{hotel.price}</p>
+              {/* RIGHT SIDE DETAILS */}
+              <div className="flight-details">
+                <h3>{hotel.name}</h3>
+                <p><b>Location:</b> {hotel.location}</p>
+                <p><b>Rating:</b> {hotel.rating} Star</p>
+                <p><b>Price: ₹</b>{hotel.price}</p>
 
-              <div style={{ marginTop: "10px" }}>
-                <button
-                  className="book-btn"
-                  onClick={() => selectHotel(hotel)}
-                  style={{ marginRight: "10px" }}
-                >
-                  Select Hotel
-                </button>
-
-                <button
-                  className="book-btn"
-                  onClick={() => bookHotel(hotel)}
-                >
-                  Book Now
-                </button>
+                <div className="flight-buttons">
+                  <button
+                    className="book-btn"
+                    onClick={() => bookHotel(hotel)}
+                  >
+                    Book Now
+                  </button>
+                </div>
               </div>
 
             </div>
@@ -94,6 +97,5 @@ function Hotels({ onSelectHotel }) {
     </div>
   );
 }
-// hotel booking 
-// safasfs
+
 export default Hotels;
