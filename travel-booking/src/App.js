@@ -8,7 +8,6 @@ import Home from "./pages/Home";
 import Destinations from "./pages/Destinations";
 import Packages from "./pages/packages";
 import Booking from "./pages/Booking";
-
 import Offers from "./pages/offers";
 import Support from "./pages/support";
 import Flights from "./pages/flights";
@@ -28,10 +27,17 @@ function App() {
         {/* Home */}
         <Route path="/" element={<Home />} />
 
-        {/* Core Pages */}
+        {/* Destinations */}
         <Route path="/destinations" element={<Destinations />} />
+
+        {/* Packages */}
         <Route path="/packages" element={<Packages />} />
+        <Route path="/packages/:name" element={<Packages />} />
+
+        {/* Booking */}
         <Route path="/booking" element={<Booking />} />
+
+        {/* My Trip */}
         <Route path="/mytrip" element={<MyTrips />} />
 
         {/* Feature Pages */}
@@ -39,11 +45,8 @@ function App() {
         <Route path="/hotels" element={<Hotels />} />
         <Route path="/tripplanner" element={<TripPlanner />} />
         <Route path="/payment" element={<Payment />} />
-        <Route path="/mytrip" element={<MyTrips />} />
-        <Route path="/payment" element={<Payment />} />
 
-
-        {/* Additional Pages */}
+        {/* Extra Pages */}
         <Route path="/offers" element={<Offers />} />
         <Route path="/support" element={<Support />} />
       </Routes>
