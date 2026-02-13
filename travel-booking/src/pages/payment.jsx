@@ -4,7 +4,34 @@ import "../styles/payment.css";
 
 function Payment() {
   const navigate = useNavigate();
-  const trip = JSON.parse(localStorage.getItem("currentTrip"));
+    // 🔹 Read hotel data
+    const trips = JSON.parse(localStorage.getItem("myTrips")) || [];
+    const hotelTrip = trips.find(t => t.type === "hotel");
+
+    // 🔹 Read coupon data
+    const couponData = JSON.parse(localStorage.getItem("appliedCoupon"));
+
+    // 🔹 Calculate values
+    const hotelPrice = hotelTrip ? hotelTrip.price : 0;
+    const discount = couponData
+      ? Math.round((hotelPrice * couponData.discount) / 100)
+      : 0;
+
+    const subtotal = hotelPrice;
+    const taxAmount = Math.round((subtotal - discount) * 0.12);
+    const finalTotal = subtotal - discount + taxAmount;
+
+    // 🔹 Build trip object (for UI compatibility)
+    const trip = {
+      hotel: hotelTrip,
+      total: subtotal,
+      discount: discount,
+      finalTotal: subtotal - discount,
+      appliedOffers: couponData
+        ? [{ title: couponData.code }]
+        : []
+      };
+
   const [method, setMethod] = useState("card");
   const [paymentDetails, setPaymentDetails] = useState({
     cardNumber: "",
@@ -97,9 +124,6 @@ function Payment() {
       }, 1000);
     }, 2000);
   };
-
-  const taxAmount = Math.round(trip?.finalTotal * 0.12) || 0;
-  const totalWithTax = (trip?.finalTotal || 0) + taxAmount;
 
   return (
     <div className="payment-wrapper">
@@ -205,7 +229,7 @@ function Payment() {
                     ₹{trip?.total + Math.round(trip?.total * 0.12)}
                   </span>
                 )}
-                <span style={{ color: '#008585', fontWeight: 'bold', fontSize: '22px' }}>₹{totalWithTax}</span>
+                <span style={{ color: '#008585', fontWeight: 'bold', fontSize: '22px' }}>₹{finalTotal}</span>
               </div>
             </div>
             
@@ -391,7 +415,7 @@ function Payment() {
               </>
             ) : (
               <>
-                Pay ₹{totalWithTax}
+                Pay ₹{finalTotal}
                 <span className="btn-icon">→</span>
               </>
             )}

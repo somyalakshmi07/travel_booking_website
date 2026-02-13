@@ -5,6 +5,10 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/footer";
 
 import Home from "./pages/Home";
+import Destinations from "./pages/Destinations";
+import Packages from "./pages/packages";
+import Booking from "./pages/Booking";
+
 import Offers from "./pages/offers";
 import Support from "./pages/support";
 import Flights from "./pages/flights";
@@ -18,14 +22,19 @@ import "./App.css";
 function App() {
   return (
     <Router>
-      {/* Navbar always visible */}
       <Navbar />
 
       <Routes>
         {/* Home */}
         <Route path="/" element={<Home />} />
 
-        {/* Main Features */}
+        {/* Core Pages */}
+        <Route path="/destinations" element={<Destinations />} />
+        <Route path="/packages" element={<Packages />} />
+        <Route path="/booking" element={<Booking />} />
+        <Route path="/mytrip" element={<MyTrips />} />
+
+        {/* Feature Pages */}
         <Route path="/flights" element={<Flights />} />
         <Route path="/hotels" element={<Hotels />} />
         <Route path="/tripplanner" element={<TripPlanner />} />
@@ -39,7 +48,6 @@ function App() {
         <Route path="/support" element={<Support />} />
       </Routes>
 
-      {/* Footer always visible */}
       <Footer />
     </Router>
   );
