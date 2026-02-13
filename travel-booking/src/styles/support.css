@@ -1,0 +1,62 @@
+.support-page {
+  background-color: #fbf2c4;
+  min-height: 100vh;
+  padding: 50px 0;
+}
+
+.support-container {
+  width: 90%;
+  max-width: 900px;
+  margin: auto;
+}
+
+.support-title {
+  color: #008585;
+  margin-bottom: 30px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #74a892;
+}
+
+.form-group textarea {
+  height: 100px;
+  resize: none;
+}
+
+.support-message {
+  margin-top: 15px;
+  font-weight: 500;
+  color: #008585;
+}
+
+.faq-title {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  color: #008585;
+}
+
+.faq-item {
+  margin-bottom: 15px;
+}
+
+.faq-question {
+  background-color: #74a892;
+  color: white;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.faq-answer {
+  background-color: white;
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 5px;
+  border: 1px solid #74a892;
+}

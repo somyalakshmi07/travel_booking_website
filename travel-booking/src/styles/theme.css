@@ -1,0 +1,14 @@
+:root {
+  --primary: #008585;
+  --secondary: #74a892;
+  --background: #fbf2c4;
+  --white: #ffffff;
+}
+
+/* Global Reset */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--background);
+  color: var(--primary);
+}
