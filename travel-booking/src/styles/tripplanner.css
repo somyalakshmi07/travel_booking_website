@@ -1,0 +1,614 @@
+/* tripplanner.css - Updated with TravelBook and Exclusive Deals styling */
+
+.planner-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  min-height: 100vh;
+}
+
+/* Hero Section with TravelBook Branding */
+.planner-hero {
+  padding: 60px 40px;
+  border-radius: 40px;
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+  animation: slideDown 0.6s ease;
+  box-shadow: 0 20px 40px rgba(0,133,133,0.15);
+}
+
+.planner-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="rgba(251,242,196,0.1)"/></svg>');
+  background-size: 100px 100px;
+  opacity: 0.2;
+}
+
+.planner-hero::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(251,242,196,0.1) 0%, transparent 70%);
+  animation: rotate 30s linear infinite;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.brand-title {
+  font-size: 4em;
+  margin-bottom: 15px;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  letter-spacing: -0.5px;
+  animation: fadeInUp 0.8s ease;
+}
+
+.hero-content p {
+  font-size: 1.3em;
+  opacity: 0.95;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+/* Exclusive Deals Section - Styled like image */
+.exclusive-deals {
+  position: relative;
+  z-index: 3;
+  max-width: 1000px;
+  margin: 0 auto 50px;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 30px;
+  border: 1px solid rgba(251, 242, 196, 0.3);
+  animation: fadeInUp 1s ease;
+}
+
+.deals-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid rgba(251, 242, 196, 0.3);
+}
+
+.deals-header h2 {
+  margin: 0;
+  font-size: 1.8em;
+  font-weight: 700;
+  color: #fbf2c4;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.deals-badge {
+  padding: 8px 20px;
+  background: #fbf2c4;
+  color: #008585;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.deals-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
+
+.offer-card {
+  padding: 25px;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
+}
+
+.offer-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0,133,133,0.05) 0%, rgba(116,168,146,0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.offer-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,133,133,0.15);
+  border-color: #008585;
+}
+
+.offer-card:hover::before {
+  opacity: 1;
+}
+
+.offer-card.applied {
+  border: 2px solid #008585;
+  box-shadow: 0 15px 35px rgba(0,133,133,0.2);
+}
+
+.offer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.offer-badge {
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.applied-badge {
+  padding: 6px 16px;
+  background: #008585;
+  color: #fbf2c4;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 600;
+  animation: pulse 2s infinite;
+}
+
+.offer-card h3 {
+  font-size: 2em;
+  margin: 0 0 15px 0;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #008585 0%, #74a892 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.offer-card p {
+  margin: 0 0 25px 0;
+  font-size: 1.1em;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.apply-offer-btn,
+.remove-offer-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.apply-offer-btn::after,
+.remove-offer-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.apply-offer-btn:hover::after,
+.remove-offer-btn:hover::after {
+  width: 300px;
+  height: 300px;
+}
+
+.apply-offer-btn:hover,
+.remove-offer-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0,133,133,0.2);
+}
+
+/* Quick Stats */
+.quick-stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 30px;
+  position: relative;
+  z-index: 2;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  padding: 18px 35px;
+  border-radius: 60px;
+  border: 1px solid rgba(251,242,196,0.3);
+  transition: all 0.3s;
+  animation: fadeInUp 1.2s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-5px);
+  background: rgba(255,255,255,0.25);
+  border-color: #fbf2c4;
+}
+
+.stat-icon {
+  font-size: 32px;
+}
+
+.stat-item h4 {
+  margin: 0;
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.stat-item p {
+  margin: 0;
+  color: #fbf2c4;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* Progress Tracker */
+.booking-progress {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  padding: 30px 40px;
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+  animation: fadeIn 0.8s ease;
+  border: 1px solid rgba(0,133,133,0.1);
+}
+
+.progress-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  flex: 1;
+  position: relative;
+}
+
+.progress-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  right: -30px;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #e0e0e0, #f0f0f0);
+  border-radius: 3px;
+}
+
+.progress-step.active:not(:last-child)::after {
+  background: linear-gradient(90deg, #008585, #74a892);
+  animation: progressFill 1s ease forwards;
+}
+
+.step-indicator {
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+.step-number {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #666;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-step.active .step-number {
+  background: linear-gradient(135deg, #008585, #74a892);
+  color: #fbf2c4;
+  transform: scale(1.1);
+  box-shadow: 0 5px 20px rgba(0,133,133,0.3);
+}
+
+.progress-step.completed .step-number {
+  background: linear-gradient(135deg, #74a892, #008585);
+  color: white;
+}
+
+.step-check {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #008585;
+  color: #fbf2c4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  border: 2px solid white;
+  box-shadow: 0 2px 10px rgba(0,133,133,0.3);
+  animation: popIn 0.3s ease;
+}
+
+/* Price Breakdown with Discounts */
+.price-breakdown {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 2px solid rgba(251, 242, 196, 0.2);
+}
+
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 14px;
+  padding: 5px 0;
+}
+
+.breakdown-row.discount {
+  background: rgba(251, 242, 196, 0.1);
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.breakdown-row.total {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid rgba(251, 242, 196, 0.3);
+}
+
+.total-amount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.original-price {
+  font-size: 14px;
+  color: rgba(251, 242, 196, 0.7);
+  text-decoration: line-through;
+}
+
+/* Save Badge */
+.save-badge {
+  padding: 15px;
+  border-radius: 16px;
+  margin: 20px 0;
+  text-align: center;
+  font-weight: 600;
+  font-size: 15px;
+  animation: pulse 2s infinite;
+  box-shadow: 0 5px 20px rgba(0,133,133,0.15);
+}
+
+/* Offers List in Summary */
+.offers-applied {
+  background: rgba(251, 242, 196, 0.15) !important;
+  border: 1px solid rgba(251, 242, 196, 0.3);
+}
+
+.offers-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.offer-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: #fbf2c4;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #008585;
+  animation: slideInRight 0.3s ease;
+}
+
+.offer-tag button {
+  background: none;
+  border: none;
+  color: #008585;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.offer-tag button:hover {
+  transform: scale(1.2);
+  color: #ff4444;
+}
+
+/* Toast Notification */
+.toast-notification {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  padding: 16px 30px;
+  border-radius: 16px;
+  color: white;
+  font-weight: 600;
+  z-index: 9999;
+  animation: slideInRight 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+  box-shadow: 0 10px 30px rgba(0,133,133,0.2);
+  border: 1px solid rgba(251,242,196,0.3);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  80% {
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .deals-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .planner-grid {
+    grid-template-columns: 1fr 350px;
+  }
+}
+
+@media (max-width: 992px) {
+  .deals-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .planner-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .booking-summary-column {
+    position: fixed;
+    top: auto;
+    bottom: 20px;
+    right: 20px;
+    width: 350px;
+    z-index: 1000;
+  }
+  
+  .quick-stats {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .booking-progress {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .progress-step:not(:last-child)::after {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .planner-hero {
+    padding: 40px 20px;
+  }
+  
+  .brand-title {
+    font-size: 2.5em;
+  }
+  
+  .deals-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .booking-summary-column {
+    width: calc(100% - 40px);
+    right: 20px;
+  }
+  
+  .quick-navigation {
+    display: none;
+  }
+  
+  .stat-item {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-title {
+    font-size: 2em;
+  }
+  
+  .offer-card {
+    padding: 20px;
+  }
+  
+  .offer-card h3 {
+    font-size: 1.5em;
+  }
+}

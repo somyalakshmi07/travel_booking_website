@@ -1,0 +1,58 @@
+.navbar {
+  height: 70px;
+  background: linear-gradient(135deg, #008585, #74a892);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 50px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  color: #fbf2c4;
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-item {
+  color: #fbf2c4;
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  padding-bottom: 5px;
+  transition: 0.3s;
+}
+
+/* Hover underline animation */
+.nav-item::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  left: 0;
+  bottom: 0;
+  background: #fbf2c4;
+  transition: 0.3s;
+}
+
+.nav-item:hover::after {
+  width: 100%;
+}
+
+/* Active page highlight */
+.nav-item.active {
+  font-weight: bold;
+}
+
+.nav-item.active::after {
+  width: 100%;
+}
