@@ -19,23 +19,24 @@ function Hotels() {
   // 🏨 Book Hotel and Redirect to Payment
   const bookHotel = (hotel) => {
 
-    // Get existing trip (if flight already selected)
-    const existingTrip = JSON.parse(localStorage.getItem("currentTrip")) || {};
+  // 🔥 CLEAR OLD COUPON WHEN NEW HOTEL SELECTED
+  localStorage.removeItem("appliedCoupon");
 
-    const updatedTrip = {
-      ...existingTrip,
-      hotel: hotel,
-      travelers: existingTrip.travelers || 1,
-      total: (existingTrip.flight?.price || 0) + hotel.price,
-      discount: 0,
-      finalTotal: (existingTrip.flight?.price || 0) + hotel.price
-    };
-
-    localStorage.setItem("currentTrip", JSON.stringify(updatedTrip));
-
-    // Redirect to payment
-    navigate("/payment");
+  const updatedTrip = {
+    hotel: hotel,
+    travelers: 1,
+    flight: null,
+    activities: [],
+    total: hotel.price,
+    discount: 0,
+    finalTotal: hotel.price
   };
+
+  localStorage.setItem("currentTrip", JSON.stringify(updatedTrip));
+
+  navigate("/payment");
+};
+
 
 
   return (
