@@ -27,10 +27,17 @@ function App() {
         {/* Home */}
         <Route path="/" element={<Home />} />
 
-        {/* Core Pages */}
+        {/* Destinations */}
         <Route path="/destinations" element={<Destinations />} />
+
+        {/* Packages */}
         <Route path="/packages" element={<Packages />} />
+        <Route path="/packages/:name" element={<Packages />} />
+
+        {/* Booking */}
         <Route path="/booking" element={<Booking />} />
+
+        {/* My Trip */}
         <Route path="/mytrip" element={<MyTrips />} />
 
         {/* Feature Pages */}
