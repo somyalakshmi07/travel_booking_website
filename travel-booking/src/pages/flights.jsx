@@ -2,47 +2,48 @@ import React, { useState } from "react";
 import flightsData from "../data/flights";
 import { useNavigate } from "react-router-dom";
 
-function Flights({ onSelectFlight }) {
+function Flights() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [results, setResults] = useState([]);
+  const navigate = useNavigate();
 
-  const navigate = useNavigate();   // ✅ IMPORTANT LINE
-
-  // 🔎 Search Flights
+  // 🔍 Search
   const handleSearch = () => {
     const filtered = flightsData.filter(
       (f) =>
         f.from.toLowerCase() === from.toLowerCase() &&
         f.to.toLowerCase() === to.toLowerCase()
     );
-
     setResults(filtered);
   };
 
-  // ✅ Select Flight (Optional – if using Trip Planner)
+  // ✅ Select Flight (just alert)
   const selectFlight = (flight) => {
-    if (onSelectFlight) {
-      onSelectFlight(flight);
-    }
-    alert("Flight Selected Successfully!");
+    alert(`${flight.airline} selected successfully!`);
   };
 
-  // 💳 Book Flight → Redirect to Payment
+  // 💳 Book Flight
   const bookFlight = (flight) => {
+    const existingTrips =
+      JSON.parse(localStorage.getItem("selectedTrips")) || [];
 
-    const tripData = {
-      flight: flight,
-      hotel: null,
-      travelers: 1,
+    const newTrip = {
+      bookingId: "FL" + Date.now(),
+      bookingDate: new Date().toLocaleDateString(),
+      status: "Pending",
+      title: `Flight - ${flight.airline}`,
+      duration: `${flight.from} → ${flight.to}`,
       total: flight.price,
-      discount: 0,
-      finalTotal: flight.price
+      totalWithTax: Math.round(flight.price * 1.05),
     };
 
-    localStorage.setItem("currentTrip", JSON.stringify(tripData));
+    localStorage.setItem(
+      "selectedTrips",
+      JSON.stringify([...existingTrips, newTrip])
+    );
 
-    navigate("/payment");   // ✅ Redirect works now
+    navigate("/mytrip");
   };
 
   return (
@@ -70,7 +71,7 @@ function Flights({ onSelectFlight }) {
         </button>
       </div>
 
-      {/* 📋 Results Section */}
+      {/* 📋 Results */}
       {results.length === 0 ? (
         <p className="no-results">No Flights Found</p>
       ) : (
@@ -78,7 +79,6 @@ function Flights({ onSelectFlight }) {
           {results.map((flight) => (
             <div key={flight.id} className="flight-card">
 
-              {/* LEFT SIDE IMAGE */}
               <div className="flight-image">
                 <img
                   src={flight.image}
@@ -87,7 +87,6 @@ function Flights({ onSelectFlight }) {
                 />
               </div>
 
-              {/* RIGHT SIDE DETAILS */}
               <div className="flight-details">
                 <h3>{flight.airline}</h3>
 
