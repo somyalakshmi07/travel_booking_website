@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/footer";
@@ -8,7 +8,6 @@ import Home from "./pages/Home";
 import Destinations from "./pages/Destinations";
 import Packages from "./pages/packages";
 import Booking from "./pages/Booking";
-
 import Offers from "./pages/offers";
 import Support from "./pages/support";
 import Flights from "./pages/flights";
@@ -21,7 +20,7 @@ import "./App.css";
 
 function App() {
   return (
-    <Router>
+    <>
       <Navbar />
 
       <Routes>
@@ -39,9 +38,6 @@ function App() {
         <Route path="/hotels" element={<Hotels />} />
         <Route path="/tripplanner" element={<TripPlanner />} />
         <Route path="/payment" element={<Payment />} />
-        <Route path="/mytrip" element={<MyTrips />} />
-        <Route path="/payment" element={<Payment />} />
-
 
         {/* Additional Pages */}
         <Route path="/offers" element={<Offers />} />
@@ -49,7 +45,7 @@ function App() {
       </Routes>
 
       <Footer />
-    </Router>
+    </>
   );
 }
 
