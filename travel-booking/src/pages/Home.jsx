@@ -6,8 +6,6 @@ function Home() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
 
-  const weather = { temp: 29, condition: "Sunny", location: "Goa" };
-
   // ✅ Images from public/images
   const destinations = [
   {
@@ -47,8 +45,6 @@ function Home() {
     description: "Pink City",
   },
 ];
-
-
 
   const packages = [
     {
@@ -111,14 +107,11 @@ function Home() {
         </form>
 
         <div style={{ marginTop: "1rem" }}>
-          <button onClick={() => quickBook("hotel")} className="explore-btn">🏨 Hotel</button>
-          <button onClick={() => quickBook("flight")} className="explore-btn" style={{ marginLeft: "10px" }}>✈️ Flight</button>
-          <button onClick={() => quickBook("package")} className="explore-btn" style={{ marginLeft: "10px" }}>🎁 Package</button>
+          <button onClick={() => quickBook("hotel")} className="explore-btn">Hotel</button>
+          <button onClick={() => quickBook("flight")} className="explore-btn" style={{ marginLeft: "10px" }}>Flight</button>
+          <button onClick={() => quickBook("package")} className="explore-btn" style={{ marginLeft: "10px" }}>Package</button>
         </div>
 
-        <div style={{ marginTop: "1rem" }}>
-          ☀ {weather.location} {weather.temp}°C - {weather.condition}
-        </div>
       </section>
 
       {/* DESTINATIONS */}

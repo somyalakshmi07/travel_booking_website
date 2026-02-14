@@ -8,8 +8,6 @@ function Flights() {
   const [results, setResults] = useState([]);
   const navigate = useNavigate();
 
-  const navigate = useNavigate();
-
   const handleSearch = () => {
     const filtered = flightsData.filter(
       (f) =>

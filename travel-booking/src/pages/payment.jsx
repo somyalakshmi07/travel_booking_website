@@ -6,38 +6,36 @@ function Payment() {
   const navigate = useNavigate();
 
   // 🔹 1. Get total from MyTrips page (priority)
-  const paymentTotal =
-    parseInt(localStorage.getItem("paymentTotal")) || 0;
+  
 
   // 🔹 2. Get individual hotel (if coming directly)
-  const trips = JSON.parse(localStorage.getItem("myTrips")) || [];
-  const hotelTrip = trips.find(t => t.type === "hotel");
+// 🔹 Read latest hotel booking
+// 🔹 Read current trip
+const trip = JSON.parse(localStorage.getItem("currentTrip")) || {};
 
-  const couponData = JSON.parse(localStorage.getItem("appliedCoupon"));
+// 🔹 Read coupon
+const couponData = JSON.parse(localStorage.getItem("appliedCoupon")) || null;
 
-  const hotelPrice = hotelTrip ? hotelTrip.price : 0;
+// 🔹 If no booking selected, remove coupon
+if (!trip.flight && !trip.hotel) {
+  localStorage.removeItem("appliedCoupon");
+}
 
-  // 🔹 FINAL SUBTOTAL (if MyTrips exists use that, else hotel)
-  const subtotal = paymentTotal > 0 ? paymentTotal : hotelPrice;
+// 🔹 Subtotal
+const subtotal = trip.total || 0;
 
-  const discount = couponData
-    ? Math.round((subtotal * couponData.discount) / 100)
-    : 0;
+// 🔹 Discount
+let discount = 0;
 
-  const taxAmount = Math.round((subtotal - discount) * 0.12);
-  const finalTotal = subtotal - discount + taxAmount;
+if (couponData && subtotal > 0) {
+  discount = Math.round((subtotal * couponData.discount) / 100);
+}
 
-  // 🔹 Trip object
-  const trip = {
-    hotel: hotelTrip,
-    total: subtotal,
-    discount,
-    finalTotal,
-    appliedOffers: couponData
-      ? [{ title: couponData.code }]
-      : []
-  };
+// 🔹 Tax
+const taxAmount = Math.round((subtotal - discount) * 0.12);
 
+// 🔹 Final total
+const finalTotal = subtotal - discount + taxAmount;
 
   const [method, setMethod] = useState("card");
   const [paymentDetails, setPaymentDetails] = useState({
@@ -213,21 +211,28 @@ const confirmPayment = () => {
           )}
 
           <div className="booking-details">
-            <div className="detail-item">
-              <span className="icon" style={{ background: '#008585', color: '#fbf2c4' }}>✈️</span>
-              <div className="detail-content">
-                <h4 style={{ color: '#008585' }}>Flight</h4>
-                <p style={{ color: '#74a892' }}>{trip?.flight?.airline} • {trip?.travelers} Traveler(s)</p>
-                <span className="price" style={{ color: '#008585', fontWeight: 'bold' }}>₹{trip?.flight?.price * trip?.travelers}</span>
-              </div>
-            </div>
+            {trip?.flight && (
+  <div className="detail-item">
+    <span className="icon" style={{ background: '#008585', color: '#fbf2c4' }}>✈️</span>
+    <div className="detail-content">
+      <h4 style={{ color: '#008585' }}>Flight</h4>
+      <p style={{ color: '#74a892' }}>
+        {trip.flight.airline} • {trip.travelers} Traveler(s)
+      </p>
+      <span style={{ color: '#008585', fontWeight: 'bold' }}>
+        ₹{trip.flight.price}
+      </span>
+    </div>
+  </div>
+)}
+
             
             <div className="detail-item">
               <span className="icon" style={{ background: '#008585', color: '#fbf2c4' }}>🏨</span>
               <div className="detail-content">
                 <h4 style={{ color: '#008585' }}>Hotel</h4>
                 <p style={{ color: '#74a892' }}>{trip?.hotel?.name} • {trip?.travelers} Traveler(s)</p>
-                <span className="price" style={{ color: '#008585', fontWeight: 'bold' }}>₹{trip?.hotel?.price * trip?.travelers}</span>
+                <span className="price" style={{ color: '#008585', fontWeight: 'bold' }}>₹{trip?.hotel?.price || 0}</span>
               </div>
             </div>
 
@@ -248,15 +253,33 @@ const confirmPayment = () => {
           </div>
 
           <div className="price-breakdown" style={{ borderTop: '2px solid #74a892' }}>
+            {/* 🔵 APPLY OFFERS BUTTON */}
+            <div style={{ marginBottom: "15px" }}>
+            <button
+              onClick={() => navigate("/offers")}
+              style={{
+              padding: "8px 16px",
+              backgroundColor: "#008585",
+              color: "#fbf2c4",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer"
+            }}
+            >
+            Apply Offers
+            </button>
+          </div>  
+
+
             <div className="breakdown-row">
               <span style={{ color: '#008585' }}>Subtotal</span>
-              <span style={{ color: '#008585' }}>₹{trip?.total}</span>
+              <span style={{ color: '#008585' }}>₹{subtotal}</span>
             </div>
             
-            {trip?.discount > 0 && (
+            {discount > 0 && (
               <div className="breakdown-row discount">
                 <span style={{ color: '#008585' }}>Discount ({trip.appliedOffers?.length} offers)</span>
-                <span style={{ color: '#008585', fontWeight: 'bold' }}>- ₹{trip?.discount}</span>
+                <span style={{ color: '#008585', fontWeight: 'bold' }}>- ₹{discount}</span>
               </div>
             )}
             
@@ -268,7 +291,7 @@ const confirmPayment = () => {
             <div className="breakdown-row total">
               <span style={{ color: '#008585', fontWeight: 'bold' }}>Final Total</span>
               <div style={{ textAlign: 'right' }}>
-                {trip?.discount > 0 && (
+                {discount > 0 && (
                   <span style={{ color: '#74a892', fontSize: '14px', textDecoration: 'line-through', display: 'block' }}>
                     ₹{trip?.total + Math.round(trip?.total * 0.12)}
                   </span>
@@ -277,9 +300,9 @@ const confirmPayment = () => {
               </div>
             </div>
             
-            {trip?.discount > 0 && (
+            {discount > 0 && (
               <div className="save-message" style={{ background: '#008585', color: '#fbf2c4', padding: '12px', borderRadius: '12px', marginTop: '15px', textAlign: 'center' }}>
-                ✨ You saved ₹{trip?.discount} with TravelBook offers!
+                ✨ You saved ₹{discount} with TravelBook offers!
               </div>
             )}
           </div>
