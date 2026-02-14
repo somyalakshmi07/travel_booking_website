@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import hotelsData from "../data/hotel"; // make sure this path is correct
+import hotelsData from "../data/hotel";
 
 function Hotels() {
   const [location, setLocation] = useState("");
   const [results, setResults] = useState([]);
   const navigate = useNavigate();
 
-  // 🔍 Search Hotels
   const handleSearch = () => {
     const filtered = hotelsData.filter(
       (hotel) =>
@@ -16,10 +15,7 @@ function Hotels() {
     setResults(filtered);
   };
 
-  // 🏨 Book Hotel and Redirect to Payment
   const bookHotel = (hotel) => {
-
-    // Get existing trip (if flight already selected)
     const existingTrip = JSON.parse(localStorage.getItem("currentTrip")) || {};
 
     const updatedTrip = {
@@ -32,17 +28,14 @@ function Hotels() {
     };
 
     localStorage.setItem("currentTrip", JSON.stringify(updatedTrip));
-
-    // Redirect to payment
     navigate("/payment");
   };
-
 
   return (
     <div className="container">
       <h2 className="page-title">🏨 Hotel Booking</h2>
 
-      {/* 🔍 Search Section */}
+      {/* Search Section */}
       <div className="form-section">
         <input
           type="text"
@@ -50,21 +43,49 @@ function Hotels() {
           value={location}
           onChange={(e) => setLocation(e.target.value)}
         />
-
         <button className="search-btn" onClick={handleSearch}>
           Search Hotels
         </button>
       </div>
 
-      {/* 📋 Results Section */}
-      {results.length === 0 ? (
-        <p className="no-results">No Hotels Found</p>
-      ) : (
+      {/* 🔥 SHOW 4 IMAGES WHEN NO SEARCH */}
+      {results.length === 0 && location === "" && (
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: "20px",
+          marginTop: "40px"
+        }}>
+          {hotelsData.slice(0, 4).map((hotel) => (
+            <div key={hotel.id} style={{
+              background: "white",
+              borderRadius: "15px",
+              overflow: "hidden",
+              boxShadow: "0 8px 20px rgba(0,0,0,0.1)"
+            }}>
+              <img
+                src={hotel.image}
+                alt={hotel.name}
+                style={{
+                  width: "100%",
+                  height: "200px",
+                  objectFit: "cover"
+                }}
+              />
+              <div style={{ padding: "15px" }}>
+                <h4>{hotel.name}</h4>
+                <p>{hotel.city}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Search Results */}
+      {results.length > 0 && (
         <div className="results-container">
           {results.map((hotel) => (
             <div key={hotel.id} className="flight-card">
-
-              {/* LEFT SIDE IMAGE */}
               <div className="flight-image">
                 <img
                   src={hotel.image}
@@ -73,10 +94,9 @@ function Hotels() {
                 />
               </div>
 
-              {/* RIGHT SIDE DETAILS */}
               <div className="flight-details">
                 <h3>{hotel.name}</h3>
-                <p><b>Location:</b> {hotel.location}</p>
+                <p><b>City:</b> {hotel.city}</p>
                 <p><b>Rating:</b> {hotel.rating} Star</p>
                 <p><b>Price: ₹</b>{hotel.price}</p>
 
@@ -92,6 +112,10 @@ function Hotels() {
             </div>
           ))}
         </div>
+      )}
+
+      {results.length === 0 && location !== "" && (
+        <p className="no-results">No Hotels Found</p>
       )}
     </div>
   );
