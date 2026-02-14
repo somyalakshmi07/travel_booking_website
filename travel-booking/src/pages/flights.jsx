@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import flightsData from "../data/flights";
 import { useNavigate } from "react-router-dom";
 
-function Flights({ onSelectFlight }) {
+function Flights() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [results, setResults] = useState([]);
+  const navigate = useNavigate();
 
   const navigate = useNavigate();
 
@@ -15,15 +16,11 @@ function Flights({ onSelectFlight }) {
         f.from.toLowerCase() === from.toLowerCase() &&
         f.to.toLowerCase() === to.toLowerCase()
     );
-
     setResults(filtered);
   };
 
   const selectFlight = (flight) => {
-    if (onSelectFlight) {
-      onSelectFlight(flight);
-    }
-    alert("Flight Selected Successfully!");
+    alert(`${flight.airline} selected successfully!`);
   };
 
   const bookFlight = (flight) => {
@@ -32,8 +29,7 @@ function Flights({ onSelectFlight }) {
       hotel: null,
       travelers: 1,
       total: flight.price,
-      discount: 0,
-      finalTotal: flight.price
+      totalWithTax: Math.round(flight.price * 1.05),
     };
 
     localStorage.setItem("currentTrip", JSON.stringify(tripData));

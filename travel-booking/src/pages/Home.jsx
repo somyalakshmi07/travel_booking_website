@@ -10,39 +10,45 @@ function Home() {
 
   // ✅ Images from public/images
   const destinations = [
-    {
-      id: 1,
-      name: "Goa",
-      image: "/images/goa.jpg",
-      price: "₹15,999",
-      rating: 4.8,
-      description: "Sun, Sand & Sea"
-    },
-    {
-      id: 2,
-      name: "Kerala",
-      image: "/images/kerala.jpg",
-      price: "₹18,999",
-      rating: 4.7,
-      description: "God's Own Country"
-    },
-    {
-      id: 3,
-      name: "Manali",
-      image: "/images/manali.jpg",
-      price: "₹12,999",
-      rating: 4.9,
-      description: "Snow Paradise"
-    },
-    {
-      id: 4,
-      name: "Jaipur",
-      image: "/images/jaipur.jpg",
-      price: "₹14,999",
-      rating: 4.6,
-      description: "Pink City"
-    }
-  ];
+  {
+    id: 1,
+    name: "Goa",
+    image: "/images/goa.png", 
+    price: "₹15,999",
+    rating: 4.8,
+    days: "5 Days",
+    description: "Sun, Sand & Sea",
+  },
+  {
+    id: 2,
+    name: "Singapore",
+    image: "/images/singapore.png", 
+    price: "₹55,999",
+    rating: 4.7,
+    days: "4 Days",
+    description: "Garden-city",
+  },
+  {
+    id: 3,
+    name: "Manali",
+    image: "/images/Manali.png", // Capital M
+    price: "₹12,999",
+    rating: 4.9,
+    days: "4 Days",
+    description: "Snow Paradise",
+  },
+  {
+    id: 4,
+    name: "Jaipur",
+    image: "/images/Jaipur.png", // Capital J
+    price: "₹14,999",
+    rating: 4.6,
+    days: "4 Days",
+    description: "Pink City",
+  },
+];
+
+
 
   const packages = [
     {
