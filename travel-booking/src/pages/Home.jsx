@@ -140,32 +140,7 @@ function Home() {
         </div>
       </section>
 
-      {/* PACKAGES */}
-      <section className="packages-section">
-        <div className="section-header">
-          <h2>Featured Packages</h2>
-          <Link to="/packages">View All →</Link>
-        </div>
-
-        <div className="packages-grid">
-          {packages.map((pkg) => (
-            <div key={pkg.id} className="package-card">
-              <span className="discount-badge">{pkg.discount}</span>
-              <img src={pkg.image} alt={pkg.name} />
-              <div className="package-content">
-                <h3>{pkg.name}</h3>
-                <p>{pkg.duration}</p>
-                <p className="package-price">{pkg.price}</p>
-                <Link to={`/packages/${pkg.id}`} className="book-now-btn">
-                  Book Now
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-    </div>
+          </div>
   );
 }
 

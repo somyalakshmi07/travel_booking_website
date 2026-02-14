@@ -7,9 +7,8 @@ function Flights({ onSelectFlight }) {
   const [to, setTo] = useState("");
   const [results, setResults] = useState([]);
 
-  const navigate = useNavigate();   // ✅ IMPORTANT LINE
+  const navigate = useNavigate();
 
-  // 🔎 Search Flights
   const handleSearch = () => {
     const filtered = flightsData.filter(
       (f) =>
@@ -20,7 +19,6 @@ function Flights({ onSelectFlight }) {
     setResults(filtered);
   };
 
-  // ✅ Select Flight (Optional – if using Trip Planner)
   const selectFlight = (flight) => {
     if (onSelectFlight) {
       onSelectFlight(flight);
@@ -28,9 +26,7 @@ function Flights({ onSelectFlight }) {
     alert("Flight Selected Successfully!");
   };
 
-  // 💳 Book Flight → Redirect to Payment
   const bookFlight = (flight) => {
-
     const tripData = {
       flight: flight,
       hotel: null,
@@ -41,15 +37,14 @@ function Flights({ onSelectFlight }) {
     };
 
     localStorage.setItem("currentTrip", JSON.stringify(tripData));
-
-    navigate("/payment");   // ✅ Redirect works now
+    navigate("/payment");
   };
 
   return (
     <div className="container">
       <h2 className="page-title">Flight Booking</h2>
 
-      {/* 🔎 Search Section */}
+      {/* Search Section */}
       <div className="form-section">
         <input
           type="text"
@@ -70,15 +65,51 @@ function Flights({ onSelectFlight }) {
         </button>
       </div>
 
-      {/* 📋 Results Section */}
-      {results.length === 0 ? (
-        <p className="no-results">No Flights Found</p>
-      ) : (
+      {/* 🔥 SHOW 4 FLIGHTS WHEN PAGE LOADS */}
+      {results.length === 0 && from === "" && to === "" && (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "20px",
+            marginTop: "40px"
+          }}
+        >
+          {flightsData.slice(0, 4).map((flight) => (
+            <div
+              key={flight.id}
+              style={{
+                background: "white",
+                borderRadius: "15px",
+                overflow: "hidden",
+                boxShadow: "0 8px 20px rgba(0,0,0,0.1)"
+              }}
+            >
+              <img
+                src={flight.image}
+                alt={flight.airline}
+                style={{
+                  width: "100%",
+                  height: "200px",
+                  objectFit: "cover"
+                }}
+              />
+              <div style={{ padding: "15px" }}>
+                <h4>{flight.airline}</h4>
+                <p>
+                  {flight.from} → {flight.to}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Search Results */}
+      {results.length > 0 && (
         <div className="results-container">
           {results.map((flight) => (
             <div key={flight.id} className="flight-card">
-
-              {/* LEFT SIDE IMAGE */}
               <div className="flight-image">
                 <img
                   src={flight.image}
@@ -87,14 +118,11 @@ function Flights({ onSelectFlight }) {
                 />
               </div>
 
-              {/* RIGHT SIDE DETAILS */}
               <div className="flight-details">
                 <h3>{flight.airline}</h3>
-
                 <p className="route">
                   {flight.from} → {flight.to}
                 </p>
-
                 <p><strong>Departure Time:</strong> {flight.time}</p>
                 <p><strong>Price:</strong> ₹{flight.price}</p>
 
@@ -114,10 +142,13 @@ function Flights({ onSelectFlight }) {
                   </button>
                 </div>
               </div>
-
             </div>
           ))}
         </div>
+      )}
+
+      {results.length === 0 && (from !== "" || to !== "") && (
+        <p className="no-results">No Flights Found</p>
       )}
     </div>
   );
